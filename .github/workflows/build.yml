@@ -9,8 +9,6 @@ on:
     paths:
       - ".github/workflows/build.yml"
       - "app/**"
-  schedule:
-    - cron: "22 4 * * *"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name == 'schedule' }}
@@ -295,7 +293,7 @@ jobs:
               });
             }))).flat();
   nightly:
-    if: ${{ github.event_name == 'schedule' && github.repository_owner == 'zmkfirmware' }}
+    if: ${{ always() }} # Force full build on all commits (since they're mostly syncs)
     runs-on: ubuntu-latest
     needs: get-grouped-hardware
     outputs:
